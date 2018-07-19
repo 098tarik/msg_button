@@ -59,6 +59,8 @@ class AddMessageHandler(webapp2.RequestHandler):
             msg_text = self.request.get('text')
             if len(msg_text) > 500:
                 result['error'] = 'Message is too long.'
+            elif not msg_text.strip():
+                result['error'] = 'Message is empty.'
             else:
                 messages = memcache.get('messages')
                 if not messages:
@@ -99,7 +101,8 @@ class Message(object):
         result = {
             'email': self.email,
             'text': self.text,
-            'time': self.timestamp.strftime('%Y-%m-%d %H:%M:%S')
+            #'time': self.timestamp.strftime('%Y-%m-%d %H:%M:%S')
+            'time': self.timestamp.strftime('%I:%M:%S')
         }
         return result
 
